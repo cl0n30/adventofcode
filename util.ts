@@ -1,11 +1,11 @@
 import * as fs from "fs";
 
-export function getLines(day: number) {
-    return fs.readFileSync(`./day${day}.txt`, "utf-8").split("\r\n");
+export function getLines(day: number, separator: string = "\r\n") {
+    return fs.readFileSync(`./day${day}.txt`, "utf-8").split(separator);
 }
 
-export function tgetLines(day: number) {
-    return fs.readFileSync(`./day${day}_test.txt`, "utf-8").split("\r\n");
+export function tgetLines(day: number, separator: string = "\r\n") {
+    return fs.readFileSync(`./day${day}_test.txt`, "utf-8").split(separator);
 }
 
 export function getColumns(lines: string[]) {
@@ -38,4 +38,10 @@ export function extractNumbers(line: string): number[] {
         numbers.push(+currNumber.join(""));
     }
     return numbers;
+}
+
+export function replaceChar(s: string, position: number, char: string) {
+    let chars = [...s];
+    chars[position] = char;
+    return chars.join("");
 }
