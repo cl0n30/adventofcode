@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { Point } from "./types";
 
 export function getLines(day: number, separator: string = "\r\n") {
     return fs.readFileSync(`./day${day}.txt`, "utf-8").split(separator);
@@ -44,4 +45,37 @@ export function replaceChar(s: string, position: number, char: string) {
     let chars = [...s];
     chars[position] = char;
     return chars.join("");
+}
+
+export function floodFill<T>(
+    startX: number,
+    startY: number,
+    grid: T[][],
+    border: T,
+    fill: T
+) {
+    let queue: Point[] = [];
+    queue.push(new Point(startX, startY));
+    while (queue.length > 0) {
+        let n = queue.shift()!;
+        if (grid[n.x][n.y] != border && grid[n.x][n.y] != fill) {
+            grid[n.x][n.y] = fill;
+            queue.push(new Point(n.x - 1, n.y)); //N
+            queue.push(new Point(n.x + 1, n.y)); //S
+            queue.push(new Point(n.x, n.y - 1)); //W
+            queue.push(new Point(n.x, n.y + 1)); //E
+        }
+    }
+}
+
+//Gaußsche Trapezformel
+export function areaTrapezoid(trapezoid: Point[]) {
+    let area = 0;
+    for (let i = 0; i < trapezoid.length; i++) {
+        let curr = trapezoid[i];
+        let next = trapezoid[(i + 1) % trapezoid.length];
+        area += (curr.y + next.y) * (curr.x - next.x);
+    }
+    area = Math.abs(area) / 2;
+    return area;
 }
